@@ -1,137 +1,130 @@
+local Rayfield = loadstring(game:HttpGetAsync('https://sirius.menu/rayfield', true))()
+
 local Window = Rayfield:CreateWindow({
    Name = "Mini Yushi Cheater",
-   LoadingTitle = "Loading Mini Yushi Cheater",
-   LoadingSubtitle = "by MYC Group",
+   LoadingTitle = "Loading...",
+   LoadingSubtitle = "join the MYC server!",
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = WindowMyc, 
-      FileName = "MYC"
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "MYC HUB"
    },
-   KeySystem = true, 
-   KeySettings = {
-      Title = "Key To Access the Menu",
-      Subtitle = "The Key is in The Discord Server",
-      Note = "dc.gg/myc",
-      FileName = "KeyLock", 
-      SaveKey = true, 
-      GrabKeyFromSite = false, 
-      Key = {"000"} 
-   },
-Discord = {
+   Discord = {
       Enabled = true,
-      Invite = "https://dc.gg/myc",
-      RememberJoins = true
+      Invite = "https://discord.gg/5MG7Gx5psK", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Key Access",
+      Subtitle = "Key System",
+      Note = "Join the discord server to get the key",
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
 })
 
-
---Creating a Tab
-local MTab = Window:CreateTab("Main", 4483362458), 
-local FTab = Window:CreateTab("Fun", 4483362458), 
-local TTab = Window:CreateTab("Trolling", 4483362458), 
-local STab = Window:CreateTab("Settings", 4483362458), 
-
-
-
-Destroying the Interface
-Rayfield:Destroy()
-
--- First notification  
 Rayfield:Notify({  
     Title = "Mini Yushi Cheater",  
-    Content = "Mini Yushi Cheater has successfully loaded.",  
+    Content = "Mini Yushi Cheater loaded, click K to close.",  
     Duration = 6.5,  
 })  
 
--- Wait for the duration of the first notification  
-wait(6.5)  
 
--- Second notification  
-Rayfield:Notify({  
-    Title = "Important Information",  
-    Content = "To close, click K.",  
-    Duration = 5, -- Adjust the duration as needed  
-})
+local MTab = Window:CreateTab("Main")
+local FTab = Window:CreateTab("Fun")
+local TTab = Window:CreateTab("Trolling")
+local STab = Window:CreateTab("Settings")
 
-local Button = TTab:CreateButton({  
-    Name = "Fake Admin Team",  
+local FakeButton = TTab:CreateButton({  
+    Name = "Fake Admin Team UI",  
     Callback = function()  
-        -- Safely load and execute the Lua script from the specified URL  
         local success, err = pcall(function()  
             loadstring(game:HttpGet("https://raw.githubusercontent.com/game-hax/uca/main/release/uca.min.lua"))()  
         end)  
     end  
 })
 
-local Button = TTab:CreateButton({  
+local BonkersButton = FTab:CreateButton({  
     Name = "Go Bonkers",  
     Callback = function()  
-        -- Safely load and execute the Lua script from the specified URL  
         local TweenService = game:GetService("TweenService")
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local rootPart = character:WaitForChild("HumanoidRootPart")
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local rootPart = character:WaitForChild("HumanoidRootPart")
 
-local function createBonkersCFrame()
-    local randomOffset = Vector3.new(math.random(-5, 5), math.random(5, 10), math.random(-5, 5))
-    local randomRotation = math.rad(math.random(-180, 180))
-    return rootPart.CFrame * CFrame.new(randomOffset) * CFrame.Angles(randomRotation, randomRotation, randomRotation)
-end
+        local function createBonkersCFrame()
+            local randomOffset = Vector3.new(math.random(-5, 5), math.random(5, 10), math.random(-5, 5))
+            local randomRotation = math.rad(math.random(-180, 180))
+            return rootPart.CFrame * CFrame.new(randomOffset) * CFrame.Angles(randomRotation, randomRotation, randomRotation)
+        end
 
-local tweenInfo = TweenInfo.new(10, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
-local bonkersCFrame = createBonkersCFrame()
-local tween = TweenService:Create(rootPart, tweenInfo, {CFrame = bonkersCFrame})
+        local tweenInfo = TweenInfo.new(10, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
+        local bonkersCFrame = createBonkersCFrame()
+        local tween = TweenService:Create(rootPart, tweenInfo, {CFrame = bonkersCFrame})
 
-tween:Play()
-        end)  
+        tween:Play()  
     end  
 })
 
 
-local Player = game.Players.LocalPlayer  
-local Character = Player.Character or Player.CharacterAdded:Wait()  
-
-local ColorPicker = Tab:CreateColorPicker({  
-    Name = "Skin Changer",  
-    Color = Color3.fromRGB(255, 255, 255),  
-    Flag = "ColorPicker1",  
+local ColorPicker = FTab:CreateColorPicker({  
+    Name = " Skin Color Picker [CLIENT]",  
+    Color = Color3.fromRGB(255, 255, 255),  -- Default color (white)  
+    Flag = "ColorPicker1",  -- Unique identifier for configuration saving  
     Callback = function(Value)  
-        -- The variable (Value) is a Color3 value based on which color is selected  
+        local player = game.Players.LocalPlayer  
+        local character = player.Character or player.CharacterAdded:Wait()  
 
-        -- Change the skin color  
-        local bodyColors = Character:FindFirstChildOfClass("BodyColors")  
+        -- Check for the character's humanoid and body colors  
+        local humanoid = character:FindFirstChildOfClass("Humanoid")  
+        local bodyColors = character:FindFirstChild("Body Colors")  
 
-        if bodyColors then  
-            -- Change the skin color to the selected color from the color picker  
-            bodyColors.HeadColor = Value -- Change Head color  
-            bodyColors.LeftArmColor = Value -- Change Left Arm color  
-            bodyColors.RightArmColor = Value -- Change Right Arm color  
-            bodyColors.LeftLegColor = Value -- Change Left Leg color  
-            bodyColors.RightLegColor = Value -- Change Right Leg color  
+        if humanoid and bodyColors then  
+            -- Update the skin colors of the character based on the selected color  
+            bodyColors.HeadColor3 = Value  -- Change head color  
+            bodyColors.TorsoColor3 = Value  -- Change torso color  
+            bodyColors.LeftLegColor3 = Value  -- Change left leg color  
+            bodyColors.RightLegColor3 = Value  -- Change right leg color  
+            bodyColors.LeftArmColor3 = Value  -- Change left arm color  
+            bodyColors.RightArmColor3 = Value  -- Change right arm color  
+        end  
     end  
 })
 
+local player = game.Players.LocalPlayer  
 
---Creating an Adaptive Input (TextBox)
-local Input = TTab:CreateInput({
-   Name = "Bang Bang Tool 😏",
-   PlaceholderText = "Name",
-   RemoveTextAfterFocusLost = true,
-   Callback = function(Text)
-   -- The function that takes place when the input is changed
-   -- The variable (Text) is a string for the value in the text box
-   end,
+local targetDisplayName = "" -- Variable to store the display name input  
+
+-- Create a Toggle button to move to the target player  
+local ToggleButton = TTab:CreateToggle({  
+    Name = "Toggle Move",  
+    Flag = "ToggleMove", -- Unique identifier for configuration  
+    Callback = function()  
+        -- Get the target player by display name  
+        local targetPlayer = game.Players:FindFirstChild(targetDisplayName)  
+        if targetPlayer and targetPlayer.Character then  
+            local targetHumanoidRootPart = targetPlayer.Character:WaitForChild("HumanoidRootPart")  
+            local localCharacter = player.Character  
+            local localHumanoidRootPart = localCharacter:WaitForChild("HumanoidRootPart")  
+
+            -- Move towards the target character  
+            while isToggled and targetPlayer and targetPlayer.Character do  
+                -- Update local character's position  
+                localHumanoidRootPart.CFrame = targetHumanoidRootPart.CFrame * CFrame.new(0, 0, -3) -- Reposition behind the target  
+                wait(0.1) -- Update frequency  
+            end  
+        end  
+    end  
 })
 
-local Toggle = TTab:CreateToggle({
-   Name = "Bang",
-   CurrentValue = false,
-   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-   -- The function that takes place when the toggle is pressed
-   -- The variable (Value) is a boolean on whether the toggle is true or false
-   end
-})
-
-local Label = STab:CreateLabel("Credits : UI : Me , some Scripting : Christan my Friend , Bonkers Script : mov-ebx")
-end
+local Input = TTab:CreateInput({  
+    Name = "Bang Someone",  
+    PlaceholderText = "Name Here", 
+    RemoveTextAfterFocusLost = True, 
+    Callback = function(Text)  
+        targetDisplayName = inputText -- Store the input for use later  
+    end  
 })
