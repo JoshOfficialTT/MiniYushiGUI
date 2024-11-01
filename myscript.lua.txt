@@ -1,9 +1,9 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Rayfield Example Window",
-   LoadingTitle = "Rayfield Interface Suite",
-   LoadingSubtitle = "by Sirius",
+   Name = "Mini Yushi Cheater",
+   LoadingTitle = "Brand New Exploit",
+   LoadingSubtitle = "by Sirius UI and Me",
    ConfigurationSaving = {
       Enabled = true,
       FolderName = nil, 
@@ -18,11 +18,11 @@ local Window = Rayfield:CreateWindow({
    KeySettings = {
       Title = "Untitled",
       Subtitle = "Key System",
-      Note = "No method of obtaining the key is provided",
+      Note = "Join the Discord Server to Obtain the key, dc.gg/myc",
       FileName = "Key", 
       SaveKey = true,
       GrabKeyFromSite = false, 
-      Key = {"Hello"} 
+      Key = {"New"} 
    }
 })
 
