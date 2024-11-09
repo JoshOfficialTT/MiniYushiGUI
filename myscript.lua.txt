@@ -3,7 +3,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Mini Yushi Cheater",
    LoadingTitle = "Mini Yushi Cheater",
-   LoadingSubtitle = "by Sirius UI and Me",
+   LoadingSubtitle = "Loading...",
    ConfigurationSaving = {
       Enabled = true,
       FolderName = nil, 
@@ -26,10 +26,17 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local MTab = Window:CreateTab("Main", 4483362458)
-local FTab = Window:CreateTab("Fun", 4483362458)
-local TTab = Window:CreateTab("Trolling", 4483362458)
-local STab = Window:CreateTab("Settings", 4483362458)
+local MTab = Window:CreateTab("Main", 96700668017516)
+local FTab = Window:CreateTab("Fun", 98024420627507)
+local TTab = Window:CreateTab("Trolling", 91249043019184)
+local STab = Window:CreateTab("Settings", 80983262444378)
+
+local player = game.Players.LocalPlayer
+
+local WelcomeParagraph = MTab:CreateParagraph({
+    Title = "Welcome, " .. player.Name,
+    Content = "Welcome to Mini Yushi—your ultimate script hub, packed with a wide variety of powerful features! Crafted with passion, our scripts offer endless possibilities to enhance your gaming experience. Enjoy, " .. player.Name .. "."
+})
 
 local teleportTarget = ""   
 local teleportEnabled = false  
@@ -86,7 +93,7 @@ local function teleportPlayer(targetName)
 end  
 
 local TeleportToggle = TTab:CreateToggle({  
-    Name = "Bang now [BETA]",  
+    Name = "Bang now [BUGGY]",  
     Flag = "TeleportToggle",  
     Callback = function(state)  
         teleportEnabled = state  
@@ -166,4 +173,192 @@ local ServerHopButton = STab:CreateButton({
         local placeId = game.PlaceId  
         TeleportService:Teleport(placeId, LocalPlayer)  -- Teleport to the same place  
     end  
+})
+
+local Button = MTab:CreateButton({  
+    Name = "Public Bathroom Sim Items",  
+    Callback = function()  
+        print("Button clicked. Creating GUI...") -- Debug statement  
+
+        -- Create ScreenGui  
+        local Players = game:GetService("Players")  
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")  
+        local ToolEvents = ReplicatedStorage:FindFirstChild("ToolEvents")  
+
+        if not ToolEvents then  
+            warn("ToolEvents folder not found in ReplicatedStorage.")  
+            return  
+        end  
+
+        local player = Players.LocalPlayer  
+        local playerGui = player:WaitForChild("PlayerGui")  
+
+        -- Create ScreenGui  
+        local screenGui = Instance.new("ScreenGui")  
+        screenGui.Name = "ItemActionGUI"  
+        screenGui.Parent = playerGui  
+
+        -- Create main frame with grey background  
+        local mainFrame = Instance.new("Frame")  
+        mainFrame.Size = UDim2.new(0, 800, 0, 400)  
+        mainFrame.Position = UDim2.new(0.5, -400, 0.5, -200)  
+        mainFrame.BackgroundColor3 = Color3.fromRGB(169, 169, 169)  -- Light grey background  
+        mainFrame.BorderSizePixel = 0  
+        mainFrame.Parent = screenGui  
+
+        -- Add UI Corner for smooth corners  
+        local uiCorner = Instance.new("UICorner")  
+        uiCorner.CornerRadius = UDim.new(0, 10)  
+        uiCorner.Parent = mainFrame  
+
+        -- Item names for buttons and corresponding events  
+        local itemEvents = {  
+            "Mop", "Newspaper", "Phone", "Pizza", "Protest Sign",  
+            "Snow Globe", "Soap", "Soda", "Sponge", "Spray Bottle",  
+            "Taco", "Toothbrush", "Toy Gun", "Toilet Paper Roll",  
+            "Witch's Brew", "Award", "Burger", "Candy Cane",  
+            "Candy Pail", "Coffee", "Developer Plushie",  
+            "Haunted Burger", "Hot Chocolate", "Jingle Bell"  
+        }  
+
+        -- Create buttons for each item and keep them within the frame  
+        local buttonWidth = 150  
+        local buttonHeight = 30  
+        local buttonsPerRow = 5  
+        for i, itemName in ipairs(itemEvents) do  
+            local button = Instance.new("TextButton")  
+            button.Size = UDim2.new(0, buttonWidth, 0, buttonHeight)  
+            button.Position = UDim2.new(0, (i - 1) % buttonsPerRow * (buttonWidth + 10), 0, math.floor((i - 1) / buttonsPerRow) * (buttonHeight + 10) + 60)  
+            button.Text = itemName  
+            button.BackgroundColor3 = Color3.fromRGB(220, 220, 220)  
+            button.Parent = mainFrame  
+
+            -- Add UI Corner to button for smooth edges  
+            local buttonCorner = Instance.new("UICorner")  
+            buttonCorner.CornerRadius = UDim.new(0, 5)  
+            buttonCorner.Parent = button  
+
+            -- Button callback to fire events  
+            button.MouseButton1Click:Connect(function()  
+                print(itemName .. " button clicked.")  
+                local event = ToolEvents:FindFirstChild(itemName .. "Event")  
+                if event then  
+                    event:FireServer()  
+                    showFeedbackMessage(itemName .. " action performed!")  
+                else  
+                    warn(itemName .. "Event not found in ToolEvents.")  
+                end  
+            end)  
+        end  
+
+        -- Create a separator between item buttons and close/hide buttons  
+        local separator = Instance.new("Frame")  
+        separator.Size = UDim2.new(0, mainFrame.Size.X.Offset, 0, 10)  
+        separator.Position = UDim2.new(0, 0, 0, 50)  
+        separator.BackgroundColor3 = Color3.fromRGB(100, 100, 100)  
+        separator.Parent = mainFrame  
+
+        -- Add footer text at the bottom with black stroke  
+        local footerText = Instance.new("TextLabel")  
+        footerText.Size = UDim2.new(1, 0, 0.1, 0)  
+        footerText.Position = UDim2.new(0, 0, 1, -40)  
+        footerText.Text = "Mini Yushi Cheater always has ideas."  
+        footerText.TextColor3 = Color3.fromRGB(0, 0, 0)  
+        footerText.Font = Enum.Font.SourceSansBold  
+        footerText.TextScaled = true  
+        footerText.BackgroundTransparency = 1  
+        footerText.TextStrokeTransparency = 0.5  -- Stroke visibility  
+        footerText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)  -- Black stroke  
+        footerText.TextTransparency = 0.7  
+        footerText.Parent = mainFrame  
+
+        -- Function to show feedback messages  
+        local function showFeedbackMessage(message)  
+            local feedbackLabel = Instance.new("TextLabel")  
+            feedbackLabel.Size = UDim2.new(0, 200, 0, 50)  
+            feedbackLabel.Position = UDim2.new(0.5, -100, 0.1, 0)  
+            feedbackLabel.Text = message  
+            feedbackLabel.BackgroundColor3 = Color3.fromRGB(0, 128, 0)  
+            feedbackLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  
+            feedbackLabel.Parent = screenGui  
+
+            wait(2) -- Display for 2 seconds  
+            feedbackLabel:Destroy()  
+        end  
+
+        -- Create Close button at the top-right with darker red  
+        local closeButton = Instance.new("TextButton")  
+        closeButton.Size = UDim2.new(0, 80, 0, 30)  
+        closeButton.Position = UDim2.new(1, -90, 0, 10)  
+        closeButton.Text = "Close"  
+        closeButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)  -- Darker red background  
+        closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text  
+        closeButton.Parent = mainFrame  
+
+        -- Add smooth corners to Close button  
+        local closeButtonCorner = Instance.new("UICorner")  
+        closeButtonCorner.CornerRadius = UDim.new(0, 5)  
+        closeButtonCorner.Parent = closeButton  
+
+        -- Close button callback  
+        closeButton.MouseButton1Click:Connect(function()  
+            print("Closing GUI...")  
+            mainFrame.Visible = false  
+        end)  
+
+        -- Create Hide button at the top-right beside Close  
+        local hideButton = Instance.new("TextButton")  
+        hideButton.Size = UDim2.new(0, 80, 0, 30)  
+        hideButton.Position = UDim2.new(1, -180, 0, 10)  
+        hideButton.Text = "Hide"  
+        hideButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0)  
+        hideButton.TextColor3 = Color3.fromRGB(0, 0, 0)  -- Black text  
+        hideButton.Parent = mainFrame  
+
+        -- Add smooth corners to Hide button  
+        local hideButtonCorner = Instance.new("UICorner")  
+        hideButtonCorner.CornerRadius = UDim.new(0, 5)  
+        hideButtonCorner.Parent = hideButton  
+
+        -- Hide button callback  
+        hideButton.MouseButton1Click:Connect(function()  
+            print("Hiding GUI...")  
+            mainFrame.Visible = false  
+        end)  
+
+        -- Handling right shift to reopen the UI  
+        local userInputService = game:GetService("UserInputService")  
+
+        local function onInput(input, gameProcessedEvent)  
+            if input.UserInputType == Enum.UserInputType.Keyboard then  
+                if input.KeyCode == Enum.KeyCode.RightShift then  
+                    print("Toggling GUI visibility...")  
+                    mainFrame.Visible = not mainFrame.Visible  
+                end  
+            end  
+        end  
+
+        userInputService.InputBegan:Connect(onInput)  
+
+        -- Make the frame initially visible  
+        mainFrame.Visible = true  
+        print("GUI Created and Visible.")  
+    end,  
+})  
+
+local UnloadGUI = STab:CreateButton({
+   Name = "Unload the GUI",
+   Callback = function()
+   Rayfield:Destroy()
+   end,
+})
+
+local changeTheme = STab:CreateDropdown({
+    Name = "Change Theme",
+    Options = {"Default", "Light", "Green", "DarkBlue"},
+    CurrentOption = {"Default"},
+    Flag = "ThemesDropdown",
+    Callback = function(CurrentOption)
+        Window.ModifyTheme(CurrentOption[1])
+    end
 })
