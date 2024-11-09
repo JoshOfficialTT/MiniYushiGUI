@@ -2,7 +2,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
    Name = "Mini Yushi Cheater",
-   LoadingTitle = "Brand New Exploit",
+   LoadingTitle = "Mini Yushi Cheater",
    LoadingSubtitle = "by Sirius UI and Me",
    ConfigurationSaving = {
       Enabled = true,
@@ -22,7 +22,7 @@ local Window = Rayfield:CreateWindow({
       FileName = "Key", 
       SaveKey = true,
       GrabKeyFromSite = false, 
-      Key = {"New"} 
+      Key = {"2024New"} 
    }
 })
 
@@ -31,6 +31,82 @@ local FTab = Window:CreateTab("Fun", 4483362458)
 local TTab = Window:CreateTab("Trolling", 4483362458)
 local STab = Window:CreateTab("Settings", 4483362458)
 
+local teleportTarget = ""   
+local teleportEnabled = false  
+local teleportInterval = 0.1
+
+local TeleportTextbox = TTab:CreateInput({  
+    Name = "Bang Someone",  
+    Text = "",  
+    PlaceholderText = "Enter Player Name or Display Name",  
+    Flag = "TeleportTextbox",  
+    Callback = function(text)  
+        teleportTarget = text  
+    end  
+})  
+
+local function findPlayerByNameOrDisplayName(name)  
+    for _, player in pairs(game.Players:GetPlayers()) do  
+        if player.Name == name or player.DisplayName == name then  
+            return player  
+        end  
+    end  
+    return nil  
+end  
+
+local function teleportPlayer(targetName)  
+    local player = game.Players.LocalPlayer  
+    local targetPlayer = findPlayerByNameOrDisplayName(targetName)  
+
+    if targetPlayer and targetPlayer.Character then  
+        local playerCharacter = player.Character  
+        local playerHRP = playerCharacter and playerCharacter:FindFirstChild("HumanoidRootPart")  
+        local targetCharacter = targetPlayer.Character  
+        local targetHRP = targetCharacter:FindFirstChild("HumanoidRootPart")  
+
+        if playerHRP and targetHRP then  
+            -- Teleport the player to the target's position  
+            playerHRP.CFrame = targetHRP.CFrame  
+
+            -- Load the animation  
+            local humanoid = playerCharacter:FindFirstChildOfClass("Humanoid")  
+            local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)  
+
+            local animation = Instance.new("Animation")  
+            animation.AnimationId = "rbxassetid://148840371"  
+            local animationTrack = animator:LoadAnimation(animation)  
+            animationTrack:Play()  
+
+            -- Optional: Clean up after the animation plays if needed  
+            animationTrack.Stopped:Connect(function()  
+                -- Actions to take after animation finishes  
+            end)  
+        end  
+    end  
+end  
+
+local TeleportToggle = TTab:CreateToggle({  
+    Name = "Bang now [BETA]",  
+    Flag = "TeleportToggle",  
+    Callback = function(state)  
+        teleportEnabled = state  
+        if teleportEnabled then  
+            task.spawn(function()  
+                while teleportEnabled do  
+                    if teleportTarget ~= "" then  
+                        teleportPlayer(teleportTarget)  
+                    end  
+                    task.wait(teleportInterval)  -- Interval control for repeated teleportation  
+                end  
+            end)  
+        end  
+    end  
+})
+
+local seperator = TTab:CreateSection("")
+
+
+seperator:Set("")
 
 local Button = TTab:CreateButton({  
     Name = "Fake Admin",  
@@ -50,3 +126,44 @@ Mouse.Button1Down:connect( function() if not game:GetService("UserInputService")
    end,
 })
   
+
+-- Assuming you have a predefined Tab (STab)  
+local Players = game:GetService("Players")  
+local LocalPlayer = Players.LocalPlayer  
+
+-- Create a Leave Game Button in the STab  
+local LeaveGameButton = STab:CreateButton({  
+    Name = "Leave Game",  
+    Callback = function()  
+        -- Function to leave the game  
+        LocalPlayer:Kick("u wanted to leave the game bro") 
+    end  
+})
+
+
+local TeleportService = game:GetService("TeleportService")  
+local Players = game:GetService("Players")  
+local LocalPlayer = Players.LocalPlayer  
+
+-- Create a Rejoin Game Button in the STab  
+local RejoinGameButton = STab:CreateButton({  
+    Name = "Rejoin Game",  
+    Callback = function()  
+        local placeId = game.PlaceId  -- Get the current place ID  
+        TeleportService:Teleport(placeId, LocalPlayer)  -- Rejoin the game  
+    end  
+})
+
+local TeleportService = game:GetService("TeleportService")  
+local Players = game:GetService("Players")  
+local LocalPlayer = Players.LocalPlayer  
+
+-- Create a Server Hop Button in the STab (make sure STab is defined as per your UI setup)  
+local ServerHopButton = STab:CreateButton({  
+    Name = "Hop Servers",  
+    Callback = function()  
+        -- Teleport the player to the same place to force a server join  
+        local placeId = game.PlaceId  
+        TeleportService:Teleport(placeId, LocalPlayer)  -- Teleport to the same place  
+    end  
+})
